@@ -10,88 +10,66 @@
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: Rahul - NSS College of Engineering, Palakkad
+- Member 2: Navaneeth M - NSS College of Engineering, Palakkad
 
 ### Project Description
-[2-3 lines about what your project does]
+
+# 🔊 VolumeShouter: The Anti-Social Audio Controller
+
+> *Because pressing standard volume buttons is far too mainstream and socially acceptable.*
+
+## 🧐 What is this?
+Built for the **Tinker Hub Useless Projects Makeathon**, **VolumeShouter** is a gloriously counter-intuitive Python script that takes complete control of your operating system's master volume based entirely on your vocal delivery. 
+
+By weaponizing your microphone, this project forces you into moments of absolute social chaos. Trying to quietly watch a video in a crowded room? Too bad—whispering frantically will only blast your speakers to maximum volume.
+
+---
+
+## ⚡ The Chaos Logic (Reverse Calibration)
+We inverted standard audio logic to maximize maximum uselessness:
+*   🤫 **Whispering / Speaking Softly:** The system thinks you need more audio, so it aggressively triggers **Volume UP**.
+*   🗣️ **Screaming / Yelling:** The system panics at the noise pollution and triggers **Volume DOWN**.
+
+---
+
+## 🛠️ Tech Stack & Libraries
+*   **Python**: The backbone of the operation.
+*   **`sounddevice`**: Grabs real-time audio streams directly from your headphone microphone.
+*   **`numpy`**: Handles the underlying array math to process audio data.
+*   **`pyautogui`**: Simulates physical media keypresses to manipulate the OS volume.
+
+---
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+The main problem we found was that people are using their hands for decreasing and increasing the system volume, which is very much exhausting process
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+We found out that using our voice is much simpler and decided to make a voice controlled system volume controller
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
-
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
+*   **Python**: The backbone of the operation.
+*   **`sounddevice module`**: Grabs real-time audio streams directly from your headphone microphone.
+*   **`numpy module`**: Handles the underlying array math to process audio data.
+*   **`pyautogui module`**: Simulates physical media keypresses to manipulate the OS volume.
 
 ### Implementation
 For Software:
 # Installation
-[commands]
+- Installed python
+- Installed libraries : python -m pip install sounddevice numpy pyautogui
 
 # Run
-[commands]
+- Run the command: python main.py
 
 ### Project Documentation
-For Software:
+In this version the basic input feature of the project is added
 
-# Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
-
-# Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
-
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
-
-### Project Demo
-# Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
-
-# Additional Demos
-[Add any extra demo materials/links]
-
-## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+# Screenshots 
+![Screenshot1](./ss1.png)
+Output of the code verifying that the input is working properly
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
