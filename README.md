@@ -45,12 +45,12 @@ We found out that using our voice is much simpler and decided to make a voice co
 *   **`sounddevice module`**: Grabs real-time audio streams directly from your headphone microphone.
 *   **`numpy module`**: Handles the underlying array math to process audio data.
 *   **`pyautogui module`**: Simulates physical media keypresses to manipulate the OS volume.
-
+*   **`pycaw module`**: used to control the system volume
 ### Implementation
 For Software:
 # Installation
 - Installed python
-- Installed libraries : python -m pip install sounddevice numpy pyautogui
+- Installed libraries : python -m pip install sounddevice numpy pyautogui pycaw
 
 # Run
 - Run the command: python main.py
@@ -61,15 +61,11 @@ In this version the basic input feature of the project is first tested to see th
 After this the, caliberation is implemented in the python code. For testing purposes, Before directly controlling the windows volume we are giving output feedback as messages-"LOUD","SILENT" and "NORMAL"
 
 # Screenshots 
-![Screenshot1](./ss2.png)
-![Screenshot1](./ss3.png)
-Code for finding the difference in background noise and actual voice 
+![Screenshot1](./ss6.png)
+- Code and output for finding the at how much difference in background noise and actual voice should we consider as normal. This data was later added to the code. 
 
-![Screenshot1](./ss4.png)
-Output of code for finding the difference in background noise and actual voice
-
-![Screenshot1](./ss5.png)
-Output showing feedback for different sound signal
+![Screenshot1](./ss7.png)
+Output at the console when the actual code for volume control is runned
 
 --Made with ❤️ at TinkerHub Useless Projects--
 

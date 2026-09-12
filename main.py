@@ -2,15 +2,28 @@ import sounddevice as sd
 import numpy as np
 import time
 
-SAMPLE_RATE = 44100
-DURATION = 3
+from pycaw.pycaw import AudioUtilities
 
-QUIET_DISTANCE = 5
+
+# ============================================================
+# SETTINGS
+# ============================================================
+
+SAMPLE_RATE = 44100
+CALIBRATION_DURATION = 3
+
+QUIET_DISTANCE = 4
 LOUD_DISTANCE = 8
 
+VOLUME_STEP = 0.05       # 5%
+COOLDOWN = -0.15            # seconds
+
+
+# ============================================================
+# MICROPHONE
+# ============================================================
 
 def measure_sound(duration):
-    print("Listening...")
 
     recording = sd.rec(
         int(duration * SAMPLE_RATE),
@@ -31,47 +44,91 @@ def measure_sound(duration):
     return db
 
 
-# ---------------- CALIBRATION ----------------
+# ============================================================
+# VOLUME
+# ============================================================
 
-print("\n=== MICROPHONE CALIBRATION ===")
+device = AudioUtilities.GetSpeakers()
+volume = device.EndpointVolume
+
+
+def change_volume(amount):
+
+    current_volume = volume.GetMasterVolumeLevelScalar()
+
+    new_volume = max(
+        0.0,
+        min(current_volume + amount, 1.0)
+    )
+
+    volume.SetMasterVolumeLevelScalar(new_volume, None)
+
+    print(
+        f"🔊 Volume: {current_volume * 100:.0f}% → "
+        f"{new_volume * 100:.0f}%"
+    )
+
+
+# ============================================================
+# CALIBRATION
+# ============================================================
+
+print("\n================================")
+print("   VOICE VOLUME CONTROLLER")
+print("================================")
 
 print("\nStay SILENT for 3 seconds...")
-noise_level = measure_sound(DURATION)
+noise_level = measure_sound(CALIBRATION_DURATION)
 
-print("\nNow speak in your NORMAL voice for 3 seconds...")
-normal_level = measure_sound(DURATION)
+print("Now speak in your NORMAL voice for 3 seconds...")
+normal_level = measure_sound(CALIBRATION_DURATION)
 
-print("\n=== CALIBRATION COMPLETE ===")
-print(f"Background level : {noise_level:.1f} dB")
-print(f"Normal voice     : {normal_level:.1f} dB")
+print("\n========== CALIBRATION ==========")
+print(f"Background : {noise_level:.1f} dB")
+print(f"Normal     : {normal_level:.1f} dB")
+print("=================================\n")
 
-# Fixed baseline
-current_normal = normal_level
-
-print("\nStarting voice detection...")
+print("Starting controller...")
+print("QUIET  → Volume UP")
+print("NORMAL → Nothing")
+print("LOUD   → Volume DOWN")
 print("Press Ctrl+C to stop.\n")
 
 
-# ---------------- DETECTION ----------------
+# ============================================================
+# MAIN LOOP
+# ============================================================
+
+last_volume_change = 0
 
 try:
+
     while True:
 
         current_level = measure_sound(1)
 
-        difference = current_level - current_normal
+        difference = current_level - normal_level
+
+        # ---------------- CLASSIFICATION ----------------
 
         if current_level < noise_level + 3:
+
             state = "SILENCE"
 
         elif difference < -QUIET_DISTANCE:
+
             state = "QUIET"
 
         elif difference > LOUD_DISTANCE:
+
             state = "LOUD"
 
         else:
+
             state = "NORMAL"
+
+
+        # ---------------- DISPLAY ----------------
 
         print(
             f"Level: {current_level:6.1f} dB | "
@@ -79,7 +136,27 @@ try:
             f"State: {state}"
         )
 
+
+        # ---------------- VOLUME CONTROL ----------------
+
+        current_time = time.time()
+
+        if current_time - last_volume_change >= COOLDOWN:
+
+            if state == "QUIET":
+
+                change_volume(+VOLUME_STEP)
+                last_volume_change = current_time
+
+            elif state == "LOUD":
+
+                change_volume(-VOLUME_STEP)
+                last_volume_change = current_time
+
+
         time.sleep(0.1)
 
+
 except KeyboardInterrupt:
-    print("\nDetection stopped.")
+
+    print("\n\nController stopped.")
