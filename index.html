@@ -1,1 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inverted Voice Volume Controller</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #121212;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .card {
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            width: 90%;
+            max-width: 500px;
+        }
+        button {
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover { background: #ff1e27; }
+        .status-badge {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            background: #333;
+        }
+        video {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        .metrics {
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 14px;
+            color: #aaa;
+            text-align: left;
+        }
+        .vol-bar-container {
+            width: 100%;
+            background: #333;
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .vol-bar-fill {
+            height: 100%;
+            background: #2ed573;
+            width: 100%;
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body>
 
+<div class="card">
+    <h2>Inverted Volume Controller 🔊</h2>
+    <p>• <b>Whisper:</b> Volume UP<br>• <b>Loud:</b> Volume DOWN<br>• <b>Normal / Silence:</b> No Change</p>
+
+    <button id="startBtn">Start Live Controller</button>
+    
+    <div id="status" class="status-badge">Click "Start Live Controller" to begin</div>
+
+    <div class="metrics">
+        <div>Live Mic Input : <span id="curDb">-0.0</span> dB</div>
+        <div>Difference     : <span id="diffDb">+0.0</span> dB</div>
+        <div>Media Volume   : <span id="volLevel">100%</span></div>
+        <div class="vol-bar-container">
+            <div id="volBar" class="vol-bar-fill"></div>
+        </div>
+    </div>
+
+    <!-- Demo Video Player -->
+    <video id="mediaPlayer" loop controls src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"></video>
+</div>
+
+<script>
+    // Calibration parameters (matching your Python logic)
+    const QUIET_DISTANCE = 4;
+    const LOUD_DISTANCE = 8;
+    const VOLUME_STEP = 0.05; // 5% step
+
+    let noiseLevel = 0;
+    let normalLevel = 0;
+    
+    let audioCtx, analyser, micStream;
+
+    const startBtn = document.getElementById('startBtn');
+    const statusDiv = document.getElementById('status');
+    const mediaPlayer = document.getElementById('mediaPlayer');
+
+    const curDbSpan = document.getElementById('curDb');
+    const diffDbSpan = document.getElementById('diffDb');
+    const volLevelSpan = document.getElementById('volLevel');
+    const volBar = document.getElementById('volBar');
+
+    startBtn.addEventListener('click', async () => {
+        startBtn.style.display = 'none';
+        
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            micStream = audioCtx.createMediaStreamSource(stream);
+            micStream.connect(analyser);
+
+            await runCalibration();
+        } catch (err) {
+            alert('Microphone access is required for this app to work!');
+        }
+    });
+
+    async function measureDb(seconds) {
+        return new Promise((resolve) => {
+            const dataArray = new Float32Array(analyser.fftSize);
+            let sumRms = 0;
+            let samples = 0;
+
+            const interval = setInterval(() => {
+                analyser.getFloatTimeDomainData(dataArray);
+                let sumSquares = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sumSquares += dataArray[i] * dataArray[i];
+                }
+                const rms = Math.sqrt(sumSquares / dataArray.length);
+                sumRms += rms;
+                samples++;
+            }, 50);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                const avgRms = sumRms / samples;
+                const db = avgRms > 0 ? 20 * Math.log10(avgRms) : -100;
+                resolve(db);
+            }, seconds * 1000);
+        });
+    }
+
+    async function runCalibration() {
+        // Step 1: Background Noise
+        statusDiv.innerText = "Stay SILENT for 3 seconds...";
+        statusDiv.style.background = "#d35400";
+        noiseLevel = await measureDb(3);
+
+        // Step 2: Normal Speaking Voice
+        statusDiv.innerText = "Speak in your NORMAL voice for 3 seconds...";
+        statusDiv.style.background = "#2980b9";
+        normalLevel = await measureDb(3);
+
+        // Controller Active
+        statusDiv.innerText = "Calibration Done! Controller Active.";
+        statusDiv.style.background = "#27ae60";
+
+        mediaPlayer.play();
+        startMainLoop();
+    }
+
+    function updateVolumeUI(newVol) {
+        mediaPlayer.volume = newVol;
+        let percentage = Math.round(newVol * 100);
+        volLevelSpan.innerText = percentage + "%";
+        volBar.style.width = percentage + "%";
+    }
+
+    function startMainLoop() {
+        const dataArray = new Float32Array(analyser.fftSize);
+
+        setInterval(() => {
+            analyser.getFloatTimeDomainData(dataArray);
+            let sumSquares = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sumSquares += dataArray[i] * dataArray[i];
+            }
+            const rms = Math.sqrt(sumSquares / dataArray.length);
+            const currentLevel = rms > 0 ? 20 * Math.log10(rms) : -100;
+            const difference = currentLevel - normalLevel;
+
+            curDbSpan.innerText = currentLevel.toFixed(1);
+            diffDbSpan.innerText = (difference >= 0 ? "+" : "") + difference.toFixed(1);
+
+            let state = "NORMAL";
+
+            // ---------------- CLASSIFICATION ----------------
+            if (currentLevel < noiseLevel + 3) {
+                state = "SILENCE";
+            } else if (difference < -QUIET_DISTANCE) {
+                state = "QUIET";
+            } else if (difference > LOUD_DISTANCE) {
+                state = "LOUD";
+            } else {
+                state = "NORMAL";
+            }
+
+            // ---------------- VOLUME CONTROL ----------------
+            if (state === "QUIET") {
+                let nextVol = Math.min(1.0, mediaPlayer.volume + VOLUME_STEP);
+                updateVolumeUI(nextVol);
+                statusDiv.innerText = "QUIET → Volume UP 🔊";
+                statusDiv.style.background = "#27ae60";
+            } else if (state === "LOUD") {
+                let nextVol = Math.max(0.0, mediaPlayer.volume - VOLUME_STEP);
+                updateVolumeUI(nextVol);
+                statusDiv.innerText = "LOUD → Volume DOWN 🔈";
+                statusDiv.style.background = "#f39c12";
+            } else if (state === "SILENCE") {
+                // DO NOTHING (NO VOLUME CHANGE)
+                statusDiv.innerText = "SILENCE → No Change";
+                statusDiv.style.background = "#555";
+            } else {
+                // NORMAL VOICE (NO VOLUME CHANGE)
+                statusDiv.innerText = "NORMAL → No Change";
+                statusDiv.style.background = "#2980b9";
+            }
+
+        }, 200);
+    }
+</script>
+
+</body>
+</html>

@@ -51,6 +51,7 @@ For Software:
 # Installation
 - Installed python
 - Installed libraries : python -m pip install sounddevice numpy pyautogui pycaw
+- FlaskAPI should be used when deployed in web
 
 # Run
 - Run the command: python main.py
@@ -60,12 +61,21 @@ In this version the basic input feature of the project is first tested to see th
 
 After this the, caliberation is implemented in the python code. For testing purposes, Before directly controlling the windows volume we are giving output feedback as messages-"LOUD","SILENT" and "NORMAL"
 
-# Screenshots 
+Added our demo html file
+
+
+# Screenshots and Demo Video
 ![Screenshot1](./ss6.png)
 - Code and output for finding the at how much difference in background noise and actual voice should we consider as normal. This data was later added to the code. 
 
 ![Screenshot1](./ss7.png)
 Output at the console when the actual code for volume control is runned
+
+![Screenshot1](./ss8.png)
+- This is how our html file looks like 
+
+Demo Video link : https://drive.google.com/file/d/12IsWkXeN0nC88SYzpy8o4wo2wUqDb_M4/view?usp=sharing
+
 
 --Made with ❤️ at TinkerHub Useless Projects--
 

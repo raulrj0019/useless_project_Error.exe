@@ -1,0 +1,1298 @@
+/* ============================================================
+   GLOBAL
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+
+    --background: #07090d;
+    --surface: #0d1118;
+    --surface-light: #111720;
+    --border: #202833;
+
+    --text: #f1f5f9;
+    --muted: #8993a1;
+
+    --accent: #62e6a7;
+    --accent-soft: rgba(98, 230, 167, 0.12);
+
+    --blue: #62a8ff;
+    --yellow: #f5c95c;
+    --red: #ff6577;
+
+    --radius: 18px;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 20% 0%,
+            rgba(98, 230, 167, 0.06),
+            transparent 35%
+        ),
+        var(--background);
+
+    color: var(--text);
+
+    min-height: 100vh;
+
+    line-height: 1.5;
+}
+
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.header {
+
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding: 28px 32px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.brand-icon {
+
+    width: 48px;
+    height: 48px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 14px;
+
+    background: var(--accent-soft);
+
+    border: 1px solid rgba(98, 230, 167, 0.2);
+
+    font-size: 23px;
+}
+
+
+.brand h1 {
+
+    font-size: 18px;
+
+    font-weight: 650;
+
+    letter-spacing: -0.3px;
+}
+
+
+.brand p {
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-top: 2px;
+}
+
+
+.connection {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 13px;
+
+    color: var(--accent);
+}
+
+
+.connection-dot {
+
+    width: 8px;
+    height: 8px;
+
+    background: var(--accent);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 10px rgba(98, 230, 167, 0.8);
+
+    animation: pulse 1.5s infinite;
+}
+
+
+@keyframes pulse {
+
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
+}
+
+
+
+/* ============================================================
+   CONTAINER
+   ============================================================ */
+
+.container {
+
+    width: min(1400px, calc(100% - 64px));
+
+    margin: auto;
+
+    padding: 42px 0 70px;
+}
+
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+
+    display: grid;
+
+    grid-template-columns: 1.5fr 0.7fr;
+
+    gap: 30px;
+
+    padding: 35px;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(98, 230, 167, 0.06),
+            transparent 50%
+        ),
+        var(--surface);
+
+    margin-bottom: 22px;
+}
+
+
+.eyebrow,
+.section-label {
+
+    color: var(--accent);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.7px;
+}
+
+
+.hero h2 {
+
+    font-size: clamp(32px, 5vw, 58px);
+
+    line-height: 1.05;
+
+    letter-spacing: -2px;
+
+    margin: 14px 0;
+}
+
+
+.hero h2 span {
+
+    color: var(--accent);
+}
+
+
+.hero-text p {
+
+    max-width: 650px;
+
+    color: var(--muted);
+
+    font-size: 15px;
+}
+
+
+.hero-status {
+
+    align-self: center;
+
+    padding: 25px;
+
+    border-left: 1px solid var(--border);
+}
+
+
+.status-label {
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 7px;
+}
+
+
+.hero-state {
+
+    font-size: 34px;
+
+    font-weight: 750;
+
+    letter-spacing: -1px;
+
+    transition: 0.3s;
+}
+
+
+.hero-state.normal {
+    color: var(--accent);
+}
+
+.hero-state.quiet {
+    color: var(--blue);
+}
+
+.hero-state.loud {
+    color: var(--red);
+}
+
+.hero-state.silence {
+    color: var(--muted);
+}
+
+
+#heroDescription {
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-top: 4px;
+}
+
+
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+.card {
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+}
+
+
+
+/* ============================================================
+   METRICS
+   ============================================================ */
+
+.metrics {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 18px;
+}
+
+
+.metric-card {
+
+    padding: 23px;
+}
+
+
+.card-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    letter-spacing: 1.2px;
+
+    font-weight: 650;
+}
+
+
+.card-icon {
+
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 9px;
+
+    background: var(--surface-light);
+
+    font-size: 14px;
+}
+
+
+.metric-value {
+
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 6px;
+
+    margin: 25px 0 20px;
+}
+
+
+.metric-value span {
+
+    font-size: 45px;
+
+    font-weight: 700;
+
+    letter-spacing: -2px;
+}
+
+
+.metric-value small {
+
+    color: var(--muted);
+
+    font-size: 14px;
+}
+
+
+
+/* ============================================================
+   DB METER
+   ============================================================ */
+
+.meter {
+
+    width: 100%;
+
+    height: 7px;
+
+    background: #1b222c;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+
+.meter-fill {
+
+    height: 100%;
+
+    width: 50%;
+
+    border-radius: inherit;
+
+    background: var(--accent);
+
+    transition: width 0.3s ease;
+}
+
+
+.meter-labels {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #596371;
+
+    font-size: 9px;
+
+    margin-top: 7px;
+}
+
+
+
+/* ============================================================
+   DIFFERENCE
+   ============================================================ */
+
+.small-status {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-top: -8px;
+
+    margin-bottom: 30px;
+}
+
+
+.threshold-bar {
+
+    position: relative;
+
+    height: 5px;
+
+    background:
+        linear-gradient(
+            to right,
+            var(--blue) 0%,
+            var(--blue) 38%,
+            var(--accent) 38%,
+            var(--accent) 62%,
+            var(--red) 62%,
+            var(--red) 100%
+        );
+
+    border-radius: 20px;
+}
+
+
+.threshold-center {
+
+    position: absolute;
+
+    left: 50%;
+
+    top: -5px;
+
+    width: 2px;
+
+    height: 15px;
+
+    background: white;
+
+    opacity: 0.7;
+}
+
+
+#differenceIndicator {
+
+    position: absolute;
+
+    top: -5px;
+
+    left: 50%;
+
+    width: 15px;
+
+    height: 15px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow: 0 0 10px rgba(255,255,255,0.4);
+
+    transform: translateX(-50%);
+
+    transition: left 0.3s ease;
+}
+
+
+
+/* ============================================================
+   VOLUME
+   ============================================================ */
+
+.volume-display {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 14px;
+}
+
+
+.volume-number {
+
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 5px;
+}
+
+
+.volume-number span {
+
+    font-size: 52px;
+
+    font-weight: 700;
+
+    letter-spacing: -2px;
+}
+
+
+.volume-number small {
+
+    color: var(--muted);
+}
+
+
+.volume-circle {
+
+    width: 85px;
+    height: 85px;
+
+    position: relative;
+}
+
+
+.volume-circle svg {
+
+    width: 100%;
+    height: 100%;
+
+    transform: rotate(-90deg);
+}
+
+
+.circle-background {
+
+    fill: none;
+
+    stroke: #1c232d;
+
+    stroke-width: 7;
+}
+
+
+.circle-progress {
+
+    fill: none;
+
+    stroke: var(--accent);
+
+    stroke-width: 7;
+
+    stroke-linecap: round;
+
+    stroke-dasharray: 301.6;
+
+    stroke-dashoffset: 150;
+
+    transition: stroke-dashoffset 0.4s ease;
+}
+
+
+#volumeIcon {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    font-size: 19px;
+}
+
+
+
+/* ============================================================
+   TWO COLUMN GRID
+   ============================================================ */
+
+.grid {
+
+    display: grid;
+
+    grid-template-columns: 1.45fr 0.85fr;
+
+    gap: 18px;
+
+    margin-bottom: 18px;
+}
+
+
+.graph-card,
+.state-card {
+
+    padding: 23px;
+}
+
+
+.section-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+
+.section-header h3 {
+
+    font-size: 18px;
+
+    margin-top: 3px;
+
+    letter-spacing: -0.4px;
+}
+
+
+.live-indicator {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: var(--accent);
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+}
+
+
+.live-indicator span {
+
+    width: 6px;
+    height: 6px;
+
+    background: var(--accent);
+
+    border-radius: 50%;
+}
+
+
+
+/* ============================================================
+   GRAPH
+   ============================================================ */
+
+.graph {
+
+    position: relative;
+
+    height: 280px;
+
+    padding-left: 35px;
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,0.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        );
+
+    background-size: 100% 25%, 10% 100%;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+
+.graph canvas {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+}
+
+
+.graph-y-labels {
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    color: #56606d;
+
+    font-size: 9px;
+
+    padding: 5px 0;
+}
+
+
+
+/* ============================================================
+   STATE
+   ============================================================ */
+
+.state-box {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 18px;
+
+    border-radius: 14px;
+
+    border: 1px solid var(--border);
+
+    margin-bottom: 25px;
+
+    transition: 0.3s;
+}
+
+
+.state-box.normal {
+    background: rgba(98, 230, 167, 0.06);
+}
+
+.state-box.quiet {
+    background: rgba(98, 168, 255, 0.06);
+}
+
+.state-box.loud {
+    background: rgba(255, 101, 119, 0.06);
+}
+
+.state-box.silence {
+    background: rgba(137, 147, 161, 0.06);
+}
+
+
+.state-icon {
+
+    font-size: 25px;
+}
+
+
+.state-name {
+
+    font-size: 20px;
+
+    font-weight: 750;
+}
+
+
+.state-text {
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+.state-rules {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 13px;
+}
+
+
+.rule {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.rule-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+}
+
+
+.rule-dot.silence {
+    background: #68717d;
+}
+
+.rule-dot.quiet {
+    background: var(--blue);
+}
+
+.rule-dot.normal-dot {
+    background: var(--accent);
+}
+
+.rule-dot.loud {
+    background: var(--red);
+}
+
+
+.rule div {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.rule strong {
+
+    font-size: 11px;
+
+    letter-spacing: 0.5px;
+}
+
+
+.rule small {
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+
+/* ============================================================
+   CALIBRATION
+   ============================================================ */
+
+.calibration-card {
+
+    padding: 23px;
+
+    margin-bottom: 18px;
+}
+
+
+.calibration-status {
+
+    color: var(--accent);
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+}
+
+
+.calibration-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+}
+
+
+.calibration-item {
+
+    padding: 17px;
+
+    background: var(--surface-light);
+
+    border-radius: 12px;
+}
+
+
+.calibration-item span {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 8px;
+}
+
+
+.calibration-item strong {
+
+    display: block;
+
+    font-size: 20px;
+}
+
+
+.calibration-item small {
+
+    display: block;
+
+    color: #606a77;
+
+    font-size: 10px;
+
+    margin-top: 4px;
+}
+
+
+
+/* ============================================================
+   SYSTEM FLOW
+   ============================================================ */
+
+.flow-card {
+
+    padding: 23px;
+
+    margin-bottom: 18px;
+}
+
+
+.flow {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+
+.flow-item {
+
+    flex: 1;
+
+    padding: 18px;
+
+    text-align: center;
+
+    border: 1px solid var(--border);
+
+    background: var(--surface-light);
+
+    border-radius: 14px;
+}
+
+
+.flow-icon {
+
+    font-size: 25px;
+
+    margin-bottom: 8px;
+}
+
+
+.flow-item strong {
+
+    display: block;
+
+    font-size: 12px;
+}
+
+
+.flow-item span {
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+.flow-arrow {
+
+    color: var(--accent);
+
+    font-size: 22px;
+}
+
+
+
+/* ============================================================
+   ACTIVITY
+   ============================================================ */
+
+.activity-card {
+
+    padding: 23px;
+}
+
+
+#eventCount {
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+.activity-log {
+
+    max-height: 210px;
+
+    overflow-y: auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.empty-log {
+
+    color: #596371;
+
+    font-size: 12px;
+
+    padding: 20px 0;
+
+    text-align: center;
+}
+
+
+.activity-item {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 11px 13px;
+
+    background: var(--surface-light);
+
+    border-radius: 9px;
+
+    font-size: 11px;
+}
+
+
+.activity-left {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.activity-dot {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+}
+
+
+.activity-time {
+
+    color: #606a77;
+}
+
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+footer {
+
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding: 20px 32px 35px;
+
+    border-top: 1px solid var(--border);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #596371;
+
+    font-size: 10px;
+
+    letter-spacing: 0.5px;
+}
+
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+    .hero {
+
+        grid-template-columns: 1fr;
+    }
+
+    .hero-status {
+
+        border-left: none;
+
+        border-top: 1px solid var(--border);
+
+        padding: 20px 0 0;
+    }
+
+    .grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .calibration-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .header {
+
+        padding: 20px;
+
+        align-items: flex-start;
+
+        gap: 15px;
+
+        flex-direction: column;
+    }
+
+    .container {
+
+        width: calc(100% - 30px);
+
+        padding-top: 25px;
+    }
+
+    .metrics {
+
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+
+        padding: 25px;
+    }
+
+    .hero h2 {
+
+        font-size: 35px;
+    }
+
+    .calibration-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .flow {
+
+        flex-direction: column;
+    }
+
+    .flow-item {
+
+        width: 100%;
+    }
+
+    .flow-arrow {
+
+        transform: rotate(90deg);
+    }
+
+    footer {
+
+        padding-left: 20px;
+
+        padding-right: 20px;
+
+        flex-direction: column;
+
+        gap: 6px;
+    }
+
+}
